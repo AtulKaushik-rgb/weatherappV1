@@ -1,0 +1,15 @@
+.blur{
+    background-color: black 0.3;
+    z-index: 0;
+}
+.modal{
+    height: 50vh;
+    top: 50%;
+    left: 50%;
+    width: 50vw;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: black 25px 25px 25px;
+    transform: translate(50%,50%);
+}
