@@ -24,7 +24,6 @@ import styles from './home.module.css'
           key
       );
 
-      //http://api.openweathermap.org/data/2.5/weather?q=delhi&4b4172ab4b6179b66462ef3e8cf4cf04
       response
         .then((res) => res.json())
         .then((data) => {
