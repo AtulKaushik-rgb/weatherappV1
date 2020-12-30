@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Fallback from "../../container/FallBack/Fallback";
 import Temperature from "../Temperature/Temperature";
-import "./Home.css";
+import styles from './home.module.css'
 
-export const Home = () => {
+
+ const Home = () => {
   const [state, setState] = useState("");
   const [temp, setTemp] = useState({});
   const [showTemp, setShowTemp] = useState(false);
-  const API_KEY = "4b4172ab4b6179b66462ef3e8cf4cf04";
+  const key = process.env.API_KEY;
   const cities = ["Mumbai", "Delhi", "Bangalore", "Chennai"];
 
   const getTemp = () => {
@@ -20,7 +21,7 @@ export const Home = () => {
         "http://api.openweathermap.org/data/2.5/weather?q=" +
           searchText +
           "&appid=" +
-          API_KEY
+          key
       );
 
       //http://api.openweathermap.org/data/2.5/weather?q=delhi&4b4172ab4b6179b66462ef3e8cf4cf04
@@ -53,7 +54,7 @@ export const Home = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div className="input-div">
         <div className="input">
           <input
@@ -64,13 +65,15 @@ export const Home = () => {
             type="text"
           ></input>
           <i
-            className="fa fa-search"
+            className="fa fa-search-plus"
             onClick={() => getTemp()}
             aria-hidden="true"
           ></i>
         </div>
       </div>
       {showTemp ? <Temperature temp={temp} /> : null}
-    </React.Fragment>
+    </>
   );
 };
+
+ export default Home;

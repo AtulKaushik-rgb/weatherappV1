@@ -12,12 +12,12 @@ const store = createStore(Reducer);
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store = {store}>
+    {/* <Provider store = {store}> */}
     <BrowserRouter>
-    {/* <App /> */}
-    <Login/>
+    <App />
+    {/* <Login/> */}
     </BrowserRouter>
-    </Provider>
+    {/* </Provider> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
