@@ -1,116 +1,64 @@
 import React from "react";
-import "./Temperature.css";
-import "font-awesome/css/font-awesome.min.css";
-import { Redirect } from "react-router-dom";
+import moment from "moment";
+import Grid from "@material-ui/core/Grid";
+import MediaCard from "../Carditem/MediaCard";
+import uuid from 'react-uuid';
 
-const Temperature = (props) => {
-  console.log(props);
-  const {
-    temp: {
-      cod,
-      main: { temp, feels_like, humidity, temp_max, temp_min },
-      wind: { speed },
-      sys: { sunrise, sunset },
-      visibility,
-    },
-  } = props;
 
-  const getDateFromUXTime = (unix_timestamp) => {
-    // Create a new JavaScript Date object based on the timestamp
-    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(unix_timestamp * 1000);
-    // Hours part from the timestamp
-    var hours = date.getHours();
-    // Minutes part from the timestamp
-    var minutes = "0" + date.getMinutes();
-    // Seconds part from the timestamp
-    var seconds = "0" + date.getSeconds();
+const Temperature = React.memo((props) => {
+  let list = props;
+  console.log('loading...');
 
-    // Will display time in 10:30:23 format
-    var formattedTime =
-      hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
-    return formattedTime;
-  };
+// .main.   feels_like: 304.77
+// grnd_level: 994
+// humidity: 50
+// pressure: 1007
+// sea_level: 1007
+// temp: 303.53
+// temp_kf: 0.65
+// temp_max: 303.53
+// temp_min: 302.88
 
-  let tempDisplay = null;
-
-  if(parseInt(cod)==200)
+  let Dates = list.temp.map((item) =>
   {
-    console.log(cod)
-    tempDisplay = (<React.Fragment>
-      <h1>{Math.round(temp - 273)}°C</h1>
-      <div className="item">
-        <div className="LeftDiv">
-          <div className="div-item">
-            <h3>Humidiity</h3>
-            <br />
-            <span className="div-text">
-              <h3>{humidity}%</h3>
-            </span>
-          </div>
-          <div className="div-item">
-            <h3>Wind Speed</h3>
-            <br />
-            <span className="div-text">
-              <h3>{speed} km/hr</h3>
-            </span>
-          </div>
-          <div className="div-item">
-            <h3>Feels Like</h3>
-            <br />
-            <span className="div-text">
-              <h3>{Math.round(feels_like - 273)}°C</h3>
-            </span>
-          </div>
-          <div className="div-item">
-            <h3>Max Temp</h3>
-            <br />
-            <span className="div-text">
-              <h3>{Math.round(temp_max - 273)}°C</h3>
-            </span>
-          </div>
-        </div>
-        <div className="RightDiv">
-          <div className="div-item">
-            <h3>Min Temp</h3>
-            <br />
-            <span className="div-text">
-              <h3>{Math.round(temp_min - 273)}°C</h3>
-            </span>
-          </div>
-          <div className="div-item">
-            <h3>Visibility</h3>
-            <br />
-            <span className="div-text">
-              <h3>{Number.parseInt(visibility)} Meters</h3>
-            </span>
-          </div>
-          <div className="div-item">
-            <h3>Sunrise</h3>
-            <br />
-            <span className="div-text">
-              <h3>{getDateFromUXTime(sunrise)}</h3>
-            </span>
-          </div>
-          <div className="div-item">
-            <h3>Sunset</h3>
-            <br />
-            <span className="div-text">
-              <h3>{getDateFromUXTime(sunset)}</h3>
-            </span>
-          </div>
-        </div>
-      </div>
-    </React.Fragment>)
+    return{
+      date: new moment.unix(item.dt).format("Do MMM, YY"),
+      full:new moment.unix(item.dt).format("dddd"),
+      temp: Math.floor(item.main.temp - 273.15)+'°C',
+      temp_max: Math.floor(item.main.temp_max - 273.15)+'°C',
+      temp_min: Math.floor(item.main.temp_min - 273.15)+'°C',
+      humidity:item.main.humidity,
+      pressure:item.main.pressure
+    }
   }
-  else
-  {
-    tempDisplay =   (<Redirect to ="/notfound"></Redirect>)
-  }
+ );
+
+ const unique = [...new Map(Dates.map(item => [item['date'], item])).values()]
 
   return (
-    {tempDisplay}
-      );
-};
+    <div>
+      <Grid
+        container
+        alignContent={"center"}
+        justify={"center"}
+        spacing={2}
+        direction={"column"}
+      >
+        <Grid item xs={false} sm={1}></Grid>
+        <Grid item xs={12} sm={10}>
+          <Grid container spacing={4}>
+            {unique.map((item) => (
+              <Grid key={uuid()} item xs={12} sm={6} md={4} lg={4}>
+                <MediaCard data={item}/>
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+        <Grid item xs={false} sm={1}></Grid>
+      </Grid>
+      {/* <Grid direction = {"column"} xs={2} lg={2} md={3}></Grid> */}
+    </div>
+  );
+});
 
 export default Temperature;
