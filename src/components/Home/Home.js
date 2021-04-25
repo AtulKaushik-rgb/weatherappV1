@@ -58,7 +58,6 @@ const Home = () => {
   const getTemp = async (e) => {
     e.preventDefault();
     handleToggle();
-    debugger;
     setShowTemp(false);
     //let key = process.env.REACT_APP_API_URL.toString();
     let key1 = 'ee5669bc40a8113e9169782767118af3';
@@ -67,7 +66,6 @@ const Home = () => {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast?q=${searchText}&appid=${key1}`
       );
-      debugger;
       setTemp(response.data.list);
       handleClose();
       setShowTemp(true);
