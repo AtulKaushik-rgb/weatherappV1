@@ -5,7 +5,7 @@ const Home = lazy(() => import('../src/components/Home/Home'));
 
 function App() {
   return (
-    <Suspense fallback={<Fallback/>}>
+    <Suspense fallback={<div></div>}>
     <div style={{overflow:'hidden'}}>
       <Home />
     </div>
